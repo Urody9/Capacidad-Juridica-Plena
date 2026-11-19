@@ -529,7 +529,7 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Menu de navegación */
+/* Menu de navegacion */
 .quick-nav {
   max-width: 1240px;
   margin: 0 auto;
@@ -568,7 +568,7 @@ body {
 }
 
 /*
-  PANEL LATERAL (CONSOLA EDITORIAL ABIERTA)
+  PANEL LATERAL
 */
 .accessibility-drawer {
   position: fixed;
@@ -998,7 +998,7 @@ html[data-theme="dark"] .hero-section::before {
 }
 
 /*
-  LO IMPORTANTE (DISEÑO EDITORIAL DIVIDIDO)
+  LO IMPORTANTE
 */
 .editorial-split-layout {
   display: grid;
@@ -1123,7 +1123,7 @@ html[data-theme="dark"] .hero-section::before {
   color: var(--text-muted);
 }
 
-/* Compatibilidad con Modo Proyector y Lectura Fácil */
+/* Compatibilidad con Modo Proyector y Lectura Facil */
 html.projector-mode .editorial-tab-btn {
   font-size: 1.65rem;
 }
@@ -1151,7 +1151,7 @@ html.projector-mode .panel-subblock p {
 }
 
 /*
-  CIERRE DESTACADO (DISEÑO EDITORIAL ABIERTO)
+  CIERRE DESTACADO
 */
 .editorial-closing {
   max-width: 960px;
@@ -1236,7 +1236,7 @@ html.projector-mode .editorial-closing-note {
 }
 
 /*
-  EJEMPLOS PRACTICOS (MATRIZ EDITORIAL COMPARATIVA)
+  EJEMPLOS PRACTICOS 
 */
 .editorial-cases-list {
   display: flex;
