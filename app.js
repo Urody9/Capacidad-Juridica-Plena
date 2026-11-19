@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // OBSERVADOR DE INTERSECCION (SINCRONIZACION AL SCROLLEAR)
+  // OBSERVADOR DE INTERSECCION
   const totalHeaderHeight = (topNavBar ? topNavBar.offsetHeight : 0)
     + (announcementBar ? announcementBar.offsetHeight : 0);
   const observerTopMargin = `-${totalHeaderHeight + 20}px`;
@@ -264,8 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   allSections.forEach((section) => sectionObserver.observe(section));
 
-  // GESTION MODERNA DE <dialog> VISTA ENFOCADA DE PILARES
-  // CONTROL DE PESTAÑAS EDITORIALES (SECCIÓN 3: LO MÁS IMPORTANTE)
+  // CONTROL DE PESTAÑAS EDITORIALES
   const editorialTabs = Array.from(document.querySelectorAll('.editorial-tab-btn'));
   const editorialPanels = Array.from(document.querySelectorAll('.editorial-panel'));
 
@@ -408,58 +407,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
       announceToScreenReader(`Tema visual cambiado a modo ${newTheme === 'dark' ? 'oscuro' : 'claro'}`);
     });
-  }
-
-  // Ocultar / Mostrar Seccion 7
-  function setNotesVisibility(hideNotes, shouldAnnounce = true) {
-    if (!speakerSection) return;
-
-    speakerSection.hidden = hideNotes;
-
-    const notesNavLink = allNavLinks.find((link) => link.getAttribute('href') === '#notas-expositor');
-    if (notesNavLink && notesNavLink.parentElement) {
-      notesNavLink.parentElement.hidden = hideNotes;
-    }
-
-    if (hideNotes) {
-      sectionObserver.unobserve(speakerSection);
-    } else {
-      sectionObserver.observe(speakerSection);
-    }
-
-    if (btnToggleNotes) {
-      const statusSpan = btnToggleNotes.querySelector('.tool-status');
-      btnToggleNotes.setAttribute('aria-pressed', hideNotes ? 'true' : 'false');
-      if (statusSpan) statusSpan.textContent = hideNotes ? 'Ocultas' : 'Visibles';
-    }
-
-    localStorage.setItem('pag_exp_hide_notes', hideNotes ? 'true' : 'false');
-    syncHeaderHeight();
-
-    const activeSections = getActiveSections();
-    if (currentSectionIndex >= activeSections.length) {
-      goToSection(activeSections.length - 1, false);
-    } else {
-      updateProgressUI(currentSectionIndex);
-    }
-
-    if (shouldAnnounce) {
-      const message = hideNotes
-        ? 'Sección 7 de notas del expositor oculta para presentación'
-        : 'Sección 7 de notas del expositor visible';
-      announceToScreenReader(message);
-    }
-  }
-
-  if (btnToggleNotes) {
-    const savedHideNotes = localStorage.getItem('pag_exp_hide_notes') === 'true';
-    setNotesVisibility(savedHideNotes, false);
-
-    btnToggleNotes.addEventListener('click', () => {
-      const currentlyHidden = speakerSection ? speakerSection.hidden : false;
-      setNotesVisibility(!currentlyHidden, true);
-    });
-  } else {
-    updateProgressUI(0);
   }
 });
