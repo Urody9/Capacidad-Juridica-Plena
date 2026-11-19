@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description"
+    content="Página interactiva para exposición escolar/académica sobre la Capacidad Jurídica Plena de las personas con discapacidad, el fin de la interdicción, el sistema de apoyos y las salvaguardias legales en México.">
+  <title>Capacidad Jurídica Plena: El derecho a decidir | Exposición Interactiva</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <!-- Enlace de salto accesible para usuarios de teclado y lectores de pantalla -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- Region en vivo para anuncios de estado accesibles (lectores de pantalla) -->
+  <div id="a11y-announcer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Barra superior de aviso tematico -->
+  <aside class="announcement-bar" aria-label="Información institucional de la exposición">
+    <div class="announcement-content">
+      <span class="announcement-tag">UNIVERSIDAD CONTINENTE AMERICANO</span>
+      <span class="announcement-divider" aria-hidden="true">•</span>
+      <span class="announcement-text">Licenciatura en Derecho</span>
+      <span class="announcement-divider" aria-hidden="true">•</span>
+      <span class="announcement-sub">Capacidad Jurídica Plena &amp; Derechos Humanos</span>
+    </div>
+  </aside>
+
+  <!-- Barra superior fija: Progreso, Controles de Presentación y Menu Hamburguesa -->
+  <header class="top-nav-bar" role="banner">
+    <div class="progress-track" role="progressbar" id="presentation-progress" aria-valuenow="1" aria-valuemin="1"
+      aria-valuemax="7" aria-label="Progreso de la exposición">
+      <div class="progress-fill" id="progress-indicator"></div>
+    </div>
+
+    <div class="top-bar-container">
+      <div class="top-bar-brand">
+        <a href="#hero" class="brand-university-link" aria-label="Ir al inicio - Universidad Continente Americano">
+          <img src="images/logo_UCA.png" alt="Universidad Continente Americano - UCA" class="brand-university-logo"
+            height="38">
+          <span class="brand-divider" aria-hidden="true">|</span>
+          <span class="brand-title">Derecho a decidir</span>
+        </a>
+      </div>
+
+      <!-- Menu Hamburguesa lateral de opciones -->
+      <div class="top-bar-actions">
+        <button type="button" id="btn-menu-toggle" class="btn-hamburger" aria-expanded="false"
+          aria-controls="accessibility-drawer" aria-label="Abrir panel de opciones y accesibilidad">
+          <span class="hamburger-box" aria-hidden="true">
+            <span class="hamburger-inner"></span>
+          </span>
+          <span class="hamburger-label">Opciones</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu de navegación rapida por secciones -->
+    <nav class="quick-nav" aria-label="Índice de la exposición">
+      <ul class="nav-pills">
+        <li><a href="#hero" class="nav-link active" data-step="1">1. Portada</a></li>
+        <li><a href="#introduccion" class="nav-link" data-step="2">2. Introducción</a></li>
+        <li><a href="#marco-legal" class="nav-link" data-step="3">3. Marco Legal</a></li>
+        <li><a href="#pilares" class="nav-link" data-step="4">4. Lo más importante</a></li>
+        <li><a href="#ejemplos" class="nav-link" data-step="5">5. Casos Prácticos</a></li>
+        <li><a href="#conclusion" class="nav-link" data-step="6">6. En pocas palabras</a></li>
+        <li><a href="#notas-expositor" class="nav-link" data-step="7">7. Apuntes</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Panel lateral desplegable de opciones de accesibilidad -->
+  <aside id="accessibility-drawer" class="accessibility-drawer" aria-label="Opciones de visualización y accesibilidad"
+    inert>
+    <div class="drawer-header">
+      <div class="drawer-header-titles">
+        <span class="drawer-kicker">Consola de exposición</span>
+        <h3 class="drawer-title">Opciones de visualización</h3>
+      </div>
+      <button type="button" id="btn-close-drawer" class="btn-close-drawer" aria-label="Cerrar panel de opciones">
+        <span aria-hidden="true">✕</span>
+      </button>
+    </div>
+
+    <div class="drawer-content">
+      <p class="drawer-description">
+        Ajustes tipográficos y de presentación para sala, proyección o lectura cómoda:
+      </p>
+
+      <div class="drawer-buttons-list">
+        <button type="button" id="btn-font-size" class="btn-drawer-tool" aria-pressed="false">
+          <div class="tool-row-top">
+            <span class="tool-title">Modo Proyector</span>
+            <span class="tool-status" aria-hidden="true">Desactivado</span>
+          </div>
+          <span class="tool-subtitle">Aumenta el tamaño tipográfico para proyección en salón</span>
+        </button>
+
+        <button type="button" id="btn-easy-read" class="btn-drawer-tool" aria-pressed="false">
+          <div class="tool-row-top">
+            <span class="tool-title">Lectura Fácil</span>
+            <span class="tool-status" aria-hidden="true">Desactivado</span>
+          </div>
+          <span class="tool-subtitle">Alto contraste, espaciado amplio y fondo plano WCAG AAA</span>
+        </button>
+
+        <button type="button" id="btn-theme-toggle" class="btn-drawer-tool" aria-pressed="false">
+          <div class="tool-row-top">
+            <span class="tool-title" id="theme-label">Tema Oscuro</span>
+            <span class="tool-status" aria-hidden="true">Modo Claro</span>
+          </div>
+          <span class="tool-subtitle">Alternar entre paleta clara y nocturna</span>
+        </button>
+
+        <button type="button" id="btn-toggle-notes" class="btn-drawer-tool" aria-pressed="false">
+          <div class="tool-row-top">
+            <span class="tool-title">Notas del Expositor</span>
+            <span class="tool-status" aria-hidden="true">Visibles</span>
+          </div>
+          <span class="tool-subtitle">Ocultar la sección 7 de apuntes al proyectar frente al grupo</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+  <!-- Telon de fondo para cerrar al pulsar fuera -->
+  <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+
+  <!-- Contenido principal -->
+  <main id="main-content" tabindex="-1">
+
+    <!-- PORTADA -->
+    <section id="hero" class="presentation-section hero-section" data-section-index="1" aria-labelledby="hero-title">
+
+      <!-- Contenido central del Hero -->
+      <div class="section-container hero-container">
+        <div class="hero-badge">
+          <span class="hero-badge-dot" aria-hidden="true"></span>
+          Universidad Continente Americano • Exposición
+        </div>
+
+        <h1 id="hero-title" class="hero-title">
+          Capacidad Jurídica Plena:<br>
+          <span class="hero-title-accent">El derecho a decidir</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Las personas con discapacidad tienen el derecho inalienable de tomar sus propias decisiones legales
+          en
+          igualdad de condiciones que los demás.
+        </p>
+      </div>
+    </section>
+
+    <!-- weas para que se vea mejor -->
+    <div class="validation-ribbon" role="region" aria-label="Acreditación jurídica y principios de la exposición">
+      <span class="val-score">Plena Capacidad Legal</span>
+      <span class="val-divider" aria-hidden="true">•</span>
+      <span class="val-source"><strong>ONU</strong> (Art. 12 CDPD)</span>
+      <span class="val-divider" aria-hidden="true">•</span>
+      <span class="val-source">Jurisprudencia <strong>SCJN</strong></span>
+      <span class="val-divider" aria-hidden="true">•</span>
+      <span class="val-source">Código Nacional <strong>CNPCyF</strong></span>
+    </div>
+
+    <!-- INTRODUCCION DESTACADA -->
+    <section id="introduccion" class="presentation-section intro-section" data-section-index="2"
+      aria-labelledby="intro-title">
+      <div class="section-container">
+        <header class="section-header">
+          <span class="section-tag">1 / Introducción</span>
+          <h2 id="intro-title">Fundamento Esencial</h2>
+        </header>
+
+        <div class="highlight-quote-card">
+          <p class="quote-text">
+            Las personas con discapacidad tienen capacidad jurídica plena, es decir, el derecho de tomar sus
+            propias
+            decisiones legales en igualdad de condiciones que los demás.
+          </p>
+        </div>
+
+        <div class="intro-cards-grid">
+          <article class="info-card">
+            <h3 class="info-card-title">¿Qué es la capacidad jurídica?</h3>
+            <p>
+              Es la aptitud legal que toda persona tiene no solo de ser titular de derechos (goce), sino
+              de
+              <strong>ejercerlos por sí misma</strong> en actos como firmar un contrato, abrir una cuenta
+              bancaria,
+              casarse o testar.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <h3 class="info-card-title">El cambio de paradigma</h3>
+            <p>
+              Pasamos del <strong>modelo médico-asistencial</strong> (que trataba a las personas como
+              objetos de
+              protección o cuidado) al <strong>modelo social de derechos humanos</strong> (que las
+              reconoce como sujetos
+              activos con plena voluntad).
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARCO LEGAL EN MEXICO -->
+    <section id="marco-legal" class="presentation-section legal-section" data-section-index="6"
+      aria-labelledby="legal-title">
+      <div class="section-container">
+        <header class="section-header">
+          <span class="section-tag">3 / Fundamento Normativo y Jurisprudencial</span>
+          <h2 id="legal-title">Marco legal en México</h2>
+          <p class="section-desc">
+            Bases jurídicas internacionales y nacionales que respaldan la eliminación definitiva del estado
+            de
+            interdicción.
+          </p>
+        </header>
+
+        <div class="legal-timeline" role="list">
+
+          <article class="timeline-node" role="listitem">
+            <div class="timeline-marker" aria-hidden="true">
+              <span class="timeline-dot dot-international"></span>
+            </div>
+            <div class="timeline-card">
+              <div class="legal-badge international">Nivel Internacional</div>
+              <h3 class="timeline-card-title">Convención sobre los Derechos de las Personas con
+                Discapacidad (ONU)
+                — Artículo 12</h3>
+              <p class="timeline-text">
+                Establece que los Estados Partes reafirmarán que las personas con discapacidad tienen
+                derecho en
+                todas partes al reconocimiento de su personalidad jurídica, y que tienen
+                <strong>capacidad jurídica en
+                  igualdad de condiciones con las demás en todos los aspectos de la vida</strong>.
+              </p>
+              <div class="timeline-meta">
+                <span class="meta-year">2007</span>
+                <span>Ratificada por México (Tratado con rango constitucional)</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline-node" role="listitem">
+            <div class="timeline-marker" aria-hidden="true">
+              <span class="timeline-dot dot-court"></span>
+            </div>
+            <div class="timeline-card">
+              <div class="legal-badge supreme-court">Jurisprudencia Mexicana</div>
+              <h3 class="timeline-card-title">Criterios de la Suprema Corte de Justicia de la Nación
+                (SCJN)</h3>
+              <p class="timeline-text">
+                La Primera y Segunda Sala de la SCJN han resuelto diversos amparos determinando que el
+                <strong>estado de interdicción es inconstitucional</strong> por vulnerar el derecho a la
+                igualdad, la
+                no discriminación y el libre desarrollo de la personalidad.
+              </p>
+              <div class="timeline-meta">
+                <span class="meta-year">2015</span>
+                <span>Amparo en revisión 1368/2015 y precedentes vinculantes</span>
+              </div>
+            </div>
+          </article>
+          <article class="timeline-node" role="listitem">
+            <div class="timeline-marker" aria-hidden="true">
+              <span class="timeline-dot dot-reform"></span>
+            </div>
+            <div class="timeline-card">
+              <div class="legal-badge reform">Reforma Procesal Histórica</div>
+              <h3 class="timeline-card-title">Código Nacional de Procedimientos Civiles y Familiares
+                (2023)</h3>
+              <p class="timeline-text">
+                Prohíbe de forma explícita iniciar juicios de interdicción en todo el territorio
+                mexicano y regula
+                formalmente el procedimiento voluntario de <strong>designación de apoyos y formalización
+                  de
+                  salvaguardias</strong>.
+              </p>
+              <div class="timeline-meta">
+                <span class="meta-year">2023</span>
+                <span>Publicado en el Diario Oficial de la Federación (7 de junio)</span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- LO MAS IMPORTANTE -->
+    <section id="pilares" class="presentation-section pillars-section" data-section-index="3"
+      aria-labelledby="pillars-title">
+      <div class="section-container">
+        <header class="section-header">
+          <span class="section-tag">4 / Ejes Fundamentales</span>
+          <h2 id="pillars-title">Lo más importante que debes saber</h2>
+        </header>
+
+        <div class="editorial-split-layout">
+          <!-- Columna izquierda: Índice navegable -->
+          <div class="editorial-tabs-list" role="tablist" aria-label="Ejes fundamentales de la capacidad jurídica">
+            <button type="button" class="editorial-tab-btn active" role="tab" id="tab-pilar-1" aria-selected="true"
+              aria-controls="panel-pilar-1">
+              <span class="tab-num">01.</span>
+              <span class="tab-label">Adiós a la interdicción</span>
+            </button>
+
+            <button type="button" class="editorial-tab-btn" role="tab" id="tab-pilar-2" aria-selected="false"
+              aria-controls="panel-pilar-2" tabindex="-1">
+              <span class="tab-num">02.</span>
+              <span class="tab-label">Sistema de apoyos</span>
+            </button>
+
+            <button type="button" class="editorial-tab-btn" role="tab" id="tab-pilar-3" aria-selected="false"
+              aria-controls="panel-pilar-3" tabindex="-1">
+              <span class="tab-num">03.</span>
+              <span class="tab-label">Salvaguardias</span>
+            </button>
+          </div>
+
+          <!-- Columna derecha: Panel de lectura abierta -->
+          <div class="editorial-panels-wrapper">
+
+            <!-- PANEL 1 -->
+            <article class="editorial-panel" role="tabpanel" id="panel-pilar-1" aria-labelledby="tab-pilar-1">
+              <span class="panel-kicker">01 / Fin de la sustitución legal</span>
+              <p class="panel-lead">
+                Ya no se les declara "incapaces" ni se nombra a un tutor que decida por ellas.
+                <em class="panel-emphasis">La figura de la interdicción está formalmente prohibida en México.</em>
+              </p>
+
+              <div class="panel-subcolumns">
+                <div class="panel-subblock">
+                  <h3>¿Qué provocaba la interdicción?</h3>
+                  <p>
+                    Constituía una especie de "muerte civil" donde un juez transfería la voluntad de la persona a un
+                    tutor, eliminando su voz en matrimonios, cuentas de ahorro o contratos.
+                  </p>
+                </div>
+                <div class="panel-subblock">
+                  <h3>La regla actual</h3>
+                  <p>
+                    Se presume la capacidad jurídica de toda persona mayor de edad sin excepción. Los jueces ya no
+                    incapacitan; su función es reconocer los apoyos que la persona solicite.
+                  </p>
+                </div>
+              </div>
+            </article>
+
+            <!-- PANEL 2 -->
+            <article class="editorial-panel" role="tabpanel" id="panel-pilar-2" aria-labelledby="tab-pilar-2" hidden>
+              <span class="panel-kicker">02 / Sistema de apoyos</span>
+              <p class="panel-lead">
+                Si necesitan ayuda para entender o comunicar una decisión, se les brinda ese apoyo especializado,
+                <em class="panel-emphasis">ellas siempre tienen la última palabra.</em>
+              </p>
+
+              <div class="panel-subcolumns">
+                <div class="panel-subblock">
+                  <h3>¿Qué modalidades de apoyo existen?</h3>
+                  <p>
+                    Intérpretes en lengua de señas, formatos de Lectura Fácil, personas facilitadoras de confianza
+                    elegidas por la persona, asistentes tecnológicos o mediadores.
+                  </p>
+                </div>
+                <div class="panel-subblock">
+                  <h3>Diferencia clave con el tutor</h3>
+                  <p>
+                    El apoyo no sustituye la voluntad; su labor es clarificar información, traducir o canalizar lo que
+                    la persona realmente desea y decide.
+                  </p>
+                </div>
+              </div>
+            </article>
+
+            <!-- PANEL 3 -->
+            <article class="editorial-panel" role="tabpanel" id="panel-pilar-3" aria-labelledby="tab-pilar-3" hidden>
+              <span class="panel-kicker">03 / Controles y garantías</span>
+              <p class="panel-lead">
+                Son medidas y controles legales para vigilar que quienes brindan apoyo respeten su voluntad, no tengan
+                conflicto de interés <em class="panel-emphasis">y no abusen de ellas.</em>
+              </p>
+
+              <div class="panel-subcolumns">
+                <div class="panel-subblock">
+                  <h3>¿Cómo funcionan las salvaguardias?</h3>
+                  <p>
+                    Revisiones judiciales periódicas, rendición de cuentas, límites de tiempo definidos y posibilidad
+                    de que la propia persona revoque el apoyo cuando lo desee.
+                  </p>
+                </div>
+                <div class="panel-subblock">
+                  <h3>Proporcionalidad y libertad</h3>
+                  <p>
+                    Las salvaguardias deben adaptarse a las circunstancias de cada individuo y no restringir su libertad
+                    más de lo estrictamente necesario para evitar abusos o fraudes.
+                  </p>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EJEMPLOS PRACTICOS -->
+    <section id="ejemplos" class="presentation-section examples-section" data-section-index="5"
+      aria-labelledby="examples-title">
+      <div class="section-container">
+        <header class="section-header">
+          <span class="section-tag">05 / Aplicación en la Realidad</span>
+          <h2 id="examples-title">Ejemplos prácticos en la vida cotidiana</h2>
+          <p class="section-desc">
+            Comparamos la diferencia directa entre el modelo obsoleto de sustitución y el nuevo modelo de toma de
+            decisiones con apoyos.
+          </p>
+        </header>
+
+        <div class="editorial-cases-list">
+
+          <!-- CASO 1 -->
+          <article class="editorial-case-item">
+            <span class="editorial-case-kicker">01 · Finanzas personales</span>
+            <h3 class="editorial-case-title">Apertura de una cuenta bancaria o cobro de pensión</h3>
+            <div class="editorial-case-columns">
+              <div class="editorial-col-old">
+                <span class="editorial-col-label">Modelo anterior (Sustitución)</span>
+                <p>
+                  El banco exigía un tutor legal. El tutor firmaba y manejaba todo el dinero; la persona con
+                  discapacidad no tenía firma ni acceso a su propia cuenta.
+                </p>
+              </div>
+              <div class="editorial-col-new">
+                <span class="editorial-col-label">Modelo con apoyos (Capacidad plena)</span>
+                <p>
+                  La persona titular acude al banco con una persona de apoyo de su elección o con formatos de lectura
+                  fácil; es ella quien autoriza y decide el destino de sus ingresos.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- CASO 2 -->
+          <article class="editorial-case-item">
+            <span class="editorial-case-kicker">02 · Trabajo y vivienda</span>
+            <h3 class="editorial-case-title">Firma de un contrato de empleo o arrendamiento</h3>
+            <div class="editorial-case-columns">
+              <div class="editorial-col-old">
+                <span class="editorial-col-label">Modelo anterior (Sustitución)</span>
+                <p>
+                  Se presumía incapacidad legal para celebrar contratos vinculantes. Los contratos firmados por la
+                  persona podían ser anulados por "falta de capacidad".
+                </p>
+              </div>
+              <div class="editorial-col-new">
+                <span class="editorial-col-label">Modelo con apoyos (Capacidad plena)</span>
+                <p>
+                  Se adaptan los contratos a formatos comprensibles (lenguaje claro o lengua de señas). La persona
+                  ejerce su derecho al trabajo o a rentar una vivienda digna.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- CASO 3 -->
+          <article class="editorial-case-item">
+            <span class="editorial-case-kicker">03 · Salud y consentimiento</span>
+            <h3 class="editorial-case-title">Consentimiento informado para tratamientos médicos</h3>
+            <div class="editorial-case-columns">
+              <div class="editorial-col-old">
+                <span class="editorial-col-label">Modelo anterior (Sustitución)</span>
+                <p>
+                  Los familiares o médicos decidían sobre procedimientos quirúrgicos o tratamientos sin consultar ni
+                  pedir la aprobación de la persona.
+                </p>
+              </div>
+              <div class="editorial-col-new">
+                <span class="editorial-col-label">Modelo con apoyos (Capacidad plena)</span>
+                <p>
+                  El personal de salud tiene la obligación de explicar los diagnósticos y tratamientos de forma
+                  accesible. La persona manifiesta su voluntad informada.
+                </p>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONCLUSION -->
+    <section id="conclusion" class="presentation-section conclusion-section" data-section-index="4"
+      aria-labelledby="conclusion-title">
+      <div class="section-container">
+        <div class="editorial-closing">
+          <header class="editorial-closing-header">
+            <h2 id="conclusion-title" class="editorial-closing-kicker">6 / En pocas palabras</h2>
+          </header>
+
+          <blockquote class="editorial-closing-quote">
+            “La discapacidad no les quita el derecho a decidir; solo se les da la ayuda necesaria para que puedan
+            hacerlo por sí mismas.”
+          </blockquote>
+
+          <footer class="editorial-closing-footer">
+            <p class="editorial-closing-note">
+              El valor fundamental de este cambio es la <strong>dignidad intrínseca</strong>: ningún ser humano debe ser
+              invisible ante la ley ni sustituido en sus proyectos de vida.
+            </p>
+            <span class="editorial-closing-signature">
+              Licenciatura en Derecho • Universidad Continente Americano
+            </span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTAS SOBRE LA EXPOSICION -->
+    <section id="notas-expositor" class="presentation-section speaker-section" data-section-index="7"
+      aria-labelledby="speaker-title">
+      <div class="section-container">
+        <header class="section-header">
+          <span class="section-tag">Material de Apoyo</span>
+          <h2 id="speaker-title">Notas Para la Exposición</h2>
+          <p class="section-desc">
+            Secciones desplegables de ayuda para el flujo de la exposicion mjum.
+          </p>
+        </header>
+
+        <div class="speaker-accordion">
+
+          <!-- PREGUNTA 1 -->
+          <details class="speaker-detail" open>
+            <summary class="speaker-summary">
+              <span class="summary-icon" aria-hidden="true"></span>
+              <span class="summary-text">Pregunta para abrir el debate: ¿Qué pasaría si otra persona
+                decidiera todo por ti?</span>
+            </summary>
+            <div class="speaker-content">
+              <p><strong>Objetivo</strong> Hacer que los mugrosos del salon entiendan el tema desde otro punto de vista
+              </p>
+              <p>
+                Plantear la situación donde los compañeros se imaginen que alguien más decide en qué van a trabajar, si
+                pueden tener pareja,
+                qué ropa comprar o en qué gastar su sueldo sin consultarles. Esa privación de la
+                libertad era
+                exactamente lo que significaba la interdicción.
+              </p>
+            </div>
+          </details>
+
+          <!-- PREGUNTA 2 -->
+          <details class="speaker-detail">
+            <summary class="speaker-summary">
+              <span class="summary-icon" aria-hidden="true"></span>
+              <span class="summary-text">Duda común: "¿Y si la persona comete un error en su
+                decisión?"</span>
+            </summary>
+            <div class="speaker-content">
+              <p><strong>Concepto sugerido:</strong></p>
+              <p>
+                El derecho a tomar decisiones incluye el <em>derecho a equivocarse</em>, tal como lo
+                hace cualquier
+                persona sin discapacidad. Tener una discapacidad no debe exigir un estándar de
+                infalibilidad legal o
+                moral. Para prevenir abusos o fraudes existen las <strong>salvaguardias</strong>, no la
+                privación de
+                derechos.
+              </p>
+            </div>
+          </details>
+
+          <!-- PREGUNTA 3 -->
+          <details class="speaker-detail">
+            <summary class="speaker-summary">
+              <span class="summary-icon" aria-hidden="true"></span>
+              <span class="summary-text">Resumen Rapidisimo</span>
+            </summary>
+            <div class="speaker-content">
+              <ol class="speaker-steps-list">
+                <li><strong>Inicio:</strong> Definir capacidad jurídica plena: el derecho
+                  universal a decidir.
+                </li>
+                <li><strong>Desarrollo:</strong> Explicar los 3 pilares: Fin de la interdicción,
+                  apoyos a la
+                  medida y salvaguardias contra el abuso.</li>
+                <li><strong>Cierre:</strong> Recordar que los derechos no se quitan por una
+                  discapacidad; se
+                  brindan apoyos para ejercerlos con dignidad.</li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- SUGERENCIAS DE NAVEGACION -->
+          <details class="speaker-detail">
+            <summary class="speaker-summary">
+              <span class="summary-icon" aria-hidden="true"></span>
+              <span class="summary-text">Como hacer para saltar de tema más facil pero como no pude hacer que los links
+                quedaran bien pues ya ni modo mejor el scroll o como se mmás comodo</span>
+            </summary>
+            <div class="speaker-content">
+              <p class="placeholder-guide">
+                <em>La página ya está diseñada para poder controlarse con las flechas;
+                  (←) para retroceder en un tema y (→) para avanzar en un tema. Flechas arriba y abajo para subir o
+                  bajar respectivamente. RECOMENDACION: Usar las flechas para cambiar de tema y luego la de abajo para
+                  un leve sccroll y quede centrada.</em>
+              </p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+
+</html>
